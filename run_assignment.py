@@ -23,18 +23,37 @@ def get_word_search_letters(matrix, letter_size):
 
     letters = []
 
-    for letter_col in range(0, len(matrix[0]), letter_size):
-        for letter_row in range(0, len(matrix), letter_size):
+    for letter_row in range(0, len(matrix), letter_size):
+        for letter_col in range(0, len(matrix[0]), letter_size):
             letter = []
-            for pixel_col in range(letter_col, letter_col + 30):
-                for pixel_row in range(letter_row, letter_row + 30):
-                    letter.append(matrix[pixel_col, pixel_row])
+            for pixel_row in range(letter_row, letter_row + 30):
+                for pixel_col in range(letter_col, letter_col + 30):
+                    letter.append(matrix[pixel_col][pixel_row])
             letters.append(letter)
 
-    return letters
+    return np.array(letters)
 
-word_search_letters = get_word_search_letters(test1, 30)
-print(len(word_search_letters[0]))
+
+letters = get_word_search_letters(test1, 30)
+search_grid = (np.reshape(given_methods.classify(train_data, train_labels, letters), (15, 15), order='F'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
