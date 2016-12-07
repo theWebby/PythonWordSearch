@@ -1,6 +1,7 @@
 import pickle
 import given_methods
 import numpy as np
+import matplotlib.pyploy as plt
 
 # extracting the data from the pickle file
 data = pickle.load(open("data/assignment2.pkl", "rb"))
@@ -105,6 +106,7 @@ def look_vertical(word_search, word, x, y, direction):
 
     return found
 
+
 def look_diagonal(word_search, word, x, y, x_direction, y_direction):
     """
     Will perform a search for a given word vertically along a given direction from a starting point.
@@ -165,6 +167,9 @@ def check_letter_is_word(word_search, word, x, y):
         if letter_is_word:
             break
 
+    if letter_is_word:
+        print(x, y, word)
+
     return letter_is_word
 
 
@@ -176,9 +181,9 @@ def find_word(word_search, word):
     """
     found = False
 
-    for x in range(0, len(word_search[0])):
-        for y in range(0, len(word_search)):
-            if word_search[x][y] == word[0]:
+    for y in range(0, len(word_search)):
+        for x in range(0, len(word_search[0])):
+            if word_search[y][x] == letter_to_int(word[0]):
                 if check_letter_is_word(word_search, word, x, y):
                     found = True
                     break
@@ -190,14 +195,15 @@ letters = get_word_search_letters(test1, 30)
 word_search = (np.reshape(given_methods.classify(train_data, train_labels, letters), (15, 15), order='F'))
 
 print(words)
-print(look_horizontal(word_search, "LANGLEY", 8, 0, -1))
-print(look_vertical(word_search, "CANE", 0, 2, 1))
-print(look_diagonal(word_search, "NNN", 2, 2, -1, -1))
-print(look_diagonal(word_search, "YNC", 2, 0, -1, 1))
+
 print(word_search)
 
-check_letter_is_word(word_search, "BANTER", 0, 0)
+find_word(word_search, "ONFHBRO") #should print where the word was found
 
+
+# tests
+
+print(word_search[0][14])
 
 
 
