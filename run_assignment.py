@@ -1,7 +1,8 @@
 import pickle
 import given_methods
 import numpy as np
-import matplotlib.pyploy as plt
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 
 # extracting the data from the pickle file
 data = pickle.load(open("data/assignment2.pkl", "rb"))
@@ -175,8 +176,8 @@ def check_letter_is_word(word_search, word, x, y):
 
 def find_word(word_search, word):
     """
-    Searches an entire word search grid for a word
-    :param word_search: The word seach grid
+    Searches an entire word search grid for a single word
+    :param word_search: The word search grid
     :param word: The word to be searched for
     """
     found = False
@@ -191,6 +192,18 @@ def find_word(word_search, word):
             break
 
 
+def find_words(word_search, words):
+    """
+        Searches an entire word search grid for a list of words
+        :param word_search: The word search grid
+        :param word: The list of words to be searched for
+        """
+    for word in words:
+        find_word(word_search, word.upper())
+
+
+#def show_word_search_image()
+
 letters = get_word_search_letters(test1, 30)
 word_search = (np.reshape(given_methods.classify(train_data, train_labels, letters), (15, 15), order='F'))
 
@@ -198,13 +211,11 @@ print(words)
 
 print(word_search)
 
-find_word(word_search, "ONFHBRO") #should print where the word was found
+find_words(word_search, words)
 
-
-# tests
-
-print(word_search[0][14])
-
+letter_image = np.reshape(letters, (450, 450), order='F')
+plt.imshow(test1, cmap=cm.Greys_r)
+plt.show()
 
 
 
