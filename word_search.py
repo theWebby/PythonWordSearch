@@ -30,7 +30,6 @@ class WordSearch:
         self.word_search_grid = np.reshape(GivenMethods.classify(train_data, train_labels, self.letter_pixels),
                                            (self.grid_size, self.grid_size), order='F')
         self.found_words = []
-        print(self.word_search_grid)
 
     def get_letters_from_image(self, matrix):
         """
@@ -55,9 +54,9 @@ class WordSearch:
 
     def find_word(self, word):
         """
-        Searches an entire word search grid for a single word
-        :param word_search: The word search grid
-        :param word: The word to be searched for
+        Searches an entire word search grid for a single word. This is done by looking for the first letter of the word
+        and then checking if the word starts at that point in the grid.
+        :param word: The word to be searched for.
         """
         found = False
 
@@ -72,9 +71,8 @@ class WordSearch:
 
     def find_word_at_point(self, word, x, y):
         """
-        Searches horizontally, vertically and diagonally to try and find a given word from a given letter
-        in a word search (given letter location)
-        :param word_search: The word search
+        Searches horizontally, vertically and diagonally to try and find a given word from a given grid point
+        in the word search grid.
         :param word: The word that is being search for
         :param x: The x pos of the start letter in the word search grid
         :param y: The y pos of that start letter in the word search grid
@@ -82,33 +80,61 @@ class WordSearch:
         """
         letter_is_word = False
 
+        # words with incorrect letters are not marked as found but can still be added to found_words
         found_word = Search.look_horizontal(self.word_search_grid, word, x, y)
-        if found_word is not None:
+        if found_word is not None and found_word.error_count == 0:
             letter_is_word = True
         else:
             found_word = Search.look_vertical(self.word_search_grid, word, x, y)
-            if found_word is not None:
+            if found_word is not None and found_word.error_count == 0:
                 letter_is_word = True
             else:
                 found_word = Search.look_diagonal(self.word_search_grid, word, x, y)
-                if found_word is not None:
+                if found_word is not None and found_word.error_count == 0:
                     letter_is_word = True
 
         if found_word is not None:
             self.found_words.append(found_word)
-            print(x, y, word)
+            if found_word.error_count > 0:  # to try and find a more accurate match for a word
+                letter_is_word = False
 
         return letter_is_word
+
+    def filter_found_words(self):
+        words_to_delete = []
+
+        self.found_words.sort(key=lambda x: x.error_count)
+
+        for i in range(0, len(self.found_words) - 1):
+            for j in range(i + 1, len(self.found_words)):
+                if self.found_words[i].word == self.found_words[j].word:
+                    #duplicate words found
+                    if self.found_words[i].error_count < self.found_words[j].error_count:
+                        words_to_delete.append(self.found_words[j])
+                    elif self.found_words[i].error_count > self.found_words[j].error_count:
+                        words_to_delete.append(self.found_words[i])
+                    else:
+                        print("DUPLICATE WORDS FOUND! (RED)")
+                        self.found_words[i].set_color('r')
+                        self.found_words[j].set_color('r')
+
+        for word in words_to_delete:
+            self.found_words.remove(word)
 
     def solve(self):
         for word in self.words:
             self.find_word(word.upper())
 
     def show(self):
+        self.filter_found_words()
         plt.imshow(self.pixel_matrix, cmap=cm.Greys_r)
         for word in self.found_words:
             word.draw_line(self.letter_size)
         plt.show()
+
+    def print(self):
+        print(self.word_search_grid)
+
 
 
 

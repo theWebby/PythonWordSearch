@@ -3,7 +3,7 @@ from found_word import FoundWord
 
 class Search:
 
-    error_tolerance = 1
+    error_tolerance = 0
 
     @classmethod
     def look_horizontal(cls, word_search, word, x, y):
@@ -25,6 +25,7 @@ class Search:
 
         for direction in range(1, -2, -2):
             found = True
+            wrong_count = 0
             found_direction = direction
             for i in range(1, len(word)):
                 if x + (i * direction) >= len(word_search[0]) or x + (i * direction) < 0:
@@ -33,8 +34,6 @@ class Search:
                     break
                 # if the next letter in the grid is not the next letter of the word
                 if word_search[y][x + (i * direction)] != (FoundWord.letter_to_int(word[i])):
-                    print(word_search[y][x + (i * direction)])
-                    print(FoundWord.letter_to_int(word[i]))
                     wrong_count += 1
                     if wrong_count > cls.error_tolerance:
                         found = False
@@ -68,6 +67,7 @@ class Search:
 
         for direction in range(1, -2, -2):
             found = True
+            wrong_count = 0
             found_direction = direction
             for i in range(1, len(word)):
                 if y + (i * direction) >= len(word_search) or y + (i * direction) < 0:
@@ -85,7 +85,7 @@ class Search:
 
         if found:
             last_y = y + ((len(word) - 1) * found_direction)
-            return FoundWord(x, y, x, last_y, word)  # vertical word therefore x stays the same
+            return FoundWord(x, y, x, last_y, word, wrong_count)  # vertical word therefore x stays the same
         else:
             return None
 
@@ -110,10 +110,10 @@ class Search:
         found_direction_y = 0
 
         for direction_y in range(1, -2, -2):
-            #found = True
             found_direction_y = direction_y
             for direction_x in range(1, -2, -2):
                 found = True
+                wrong_count = 0
                 found_direction_x = direction_x
                 for i in range(1, len(word)):
                     if y + (i * direction_y) >= len(word_search) or y + (i * direction_y) < 0:
@@ -138,7 +138,7 @@ class Search:
         if found:
             last_x = x + ((len(word) - 1) * found_direction_x)
             last_y = y + ((len(word) - 1) * found_direction_y)
-            return FoundWord(x, y, last_x, last_y, word)  # diagonal word therefore x and y change
+            return FoundWord(x, y, last_x, last_y, word, wrong_count)  # diagonal word therefore x and y change
         else:
             return None
 

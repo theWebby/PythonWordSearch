@@ -1,9 +1,4 @@
 import pickle
-import given_methods
-import found_word
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 from word_search import WordSearch
 
 # extracting the data from the pickle file
@@ -13,49 +8,25 @@ train_labels = data['train_labels']
 test1 = data['test1']
 test2 = data['test2']
 words = data['words']
+letter_size = 30
 
 
+def wordsearch(matrix, words, train_data, train_labels):
+    """
+    This is the function that we have been asked to write for the assignment. This function takes a word search image
+    (as pixels), a list of words and some training data and labels and will output the solved word search.
+    :param matrix: A matrix representing an image of the word search grid to be processed.
+    :param words: A list of words to be found in the word search.
+    :param train_data: Training data to classify letters in the word search.
+    :param train_labels: Training labels for the training data.
+    :return:
+    """
+    word_search = WordSearch(matrix, 30, words, train_data, train_labels)
+    word_search.solve()
+    word_search.show()
 
 
-
-
-
-##
-word_search = WordSearch(test1, 30, words, train_data, train_labels)
-#word_search.solve()
-#word_search.find_word_at_point("LANGLEY", 8, 0)
-word_search.find_word("PETO")
-word_search.show()
-##
-
-
-
-
-
-
-#
-# letters = get_word_search_letters(test1, 30)
-# #word_search = (np.reshape(given_methods.classify(train_data, train_labels, letters), (15, 15), order='F'))
-#
-# print(words)
-#
-# print(word_search)
-#
-# find_words(word_search, words)
-# #find_word(word_search, "NEEJ")
-# #find_word(word_search, "JEEN")
-#
-# letter_image = np.reshape(letters, (450, 450), order='F')
-# plt.imshow(test1, cmap=cm.Greys_r)
-# #foundWord = FoundWord.FoundWord(0, 0, 450, 450)
-# #foundWord.draw_line()
-#
-# for word in foundWords:
-#     word.draw_line()
-#
-# plt.show()
-#
-
+wordsearch(test1, words, train_data, train_labels)
 
 
 

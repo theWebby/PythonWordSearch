@@ -20,13 +20,15 @@ class FoundWord:
         self.last_grid_x = last_grid_x
         self.last_grid_y = last_grid_y
         self.word = word
+        self.error_count = error_count
+        self.color = 'K'
 
     def draw_line(self, letter_size):
         """
         Plots a line from the coordinates of the first letter to the coordinates of the last letter.
         """
         plt.plot(self.grid_coordinates_to_pixels([self.first_grid_x, self.last_grid_x], letter_size),
-                 self.grid_coordinates_to_pixels([self.first_grid_y, self.last_grid_y], letter_size), color='K')
+                 self.grid_coordinates_to_pixels([self.first_grid_y, self.last_grid_y], letter_size), color=self.color)
 
     # converts a character to an integer value (A = 1; B = 2; ect.)
     @staticmethod
@@ -47,6 +49,9 @@ class FoundWord:
             pixel_coordinates.append(self.to_pixel_coordinates(grid_coordinate, letter_size))
 
         return pixel_coordinates
+
+    def set_color(self, color):
+        self.color = color
 
 
 
