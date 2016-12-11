@@ -21,14 +21,15 @@ def wordsearch(matrix, words, train_data, train_labels):
     :param train_labels: Training labels for the training data.
     :return:
     """
-    word_search = WordSearch(matrix, letter_size, words, train_data, train_labels)
+    word_search = WordSearch(matrix, letter_size, words, train_data, train_labels, True) # true for dimension reduction
     word_search.solve()
-    #word_search.find_word("EE")
+    #word_search.find_word("DON")
     word_search.print()
     word_search.show()
 
 
-wordsearch(test1, words, train_data, train_labels)
+#  when using test2, the error tolerance in search.py needs to be increased
+wordsearch(test2, words, train_data, train_labels)
 
 
 

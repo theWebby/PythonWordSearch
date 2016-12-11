@@ -3,7 +3,7 @@ from found_word import FoundWord
 
 class Search:
 
-    error_tolerance = 1
+    error_tolerance = 3
 
     @classmethod
     def look_horizontal(cls, word_search, word, x, y):
@@ -23,11 +23,12 @@ class Search:
         found = True
         found_direction = 0
 
+        # looking both directions
         for direction in range(1, -2, -2):
             found = True
             wrong_count = 0
             found_direction = direction
-            for i in range(1, len(word)):
+            for i in range(1, len(word)):  # for each letter in the word
                 if x + (i * direction) >= len(word_search[0]) or x + (i * direction) < 0:
                     # off the grid
                     found = False
