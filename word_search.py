@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from found_word import FoundWord
 from search import Search
-from given_methods import GivenMethods
+from classifier import Classifier
 
 
 class WordSearch:
@@ -27,7 +27,7 @@ class WordSearch:
         self.grid_size = int(len(pixel_matrix) / self.letter_size)
         self.words = words
         self.letter_pixels = self.get_letters_from_image(pixel_matrix)
-        self.word_search_grid = np.reshape(GivenMethods.classify(train_data, train_labels, self.letter_pixels),
+        self.word_search_grid = np.reshape(Classifier.classify(train_data, train_labels, self.letter_pixels),
                                            (self.grid_size, self.grid_size), order='F')
         self.found_words = []
 
@@ -79,24 +79,26 @@ class WordSearch:
         :return: True if the given word was found at the given letter position, otherwise false
         """
         letter_is_word = False
+        local_words = [None] * 3
 
         # words with incorrect letters are not marked as found but can still be added to found_words
-        found_word = Search.look_horizontal(self.word_search_grid, word, x, y)
-        if found_word is not None and found_word.error_count == 0:
+        local_words[0] = Search.look_horizontal(self.word_search_grid, word, x, y)
+        if local_words[0] is not None and local_words[0].error_count == 0:
             letter_is_word = True
         else:
-            found_word = Search.look_vertical(self.word_search_grid, word, x, y)
-            if found_word is not None and found_word.error_count == 0:
+            local_words[1] = Search.look_vertical(self.word_search_grid, word, x, y)
+            if local_words[1] is not None and local_words[1].error_count == 0:
                 letter_is_word = True
             else:
-                found_word = Search.look_diagonal(self.word_search_grid, word, x, y)
-                if found_word is not None and found_word.error_count == 0:
+                local_words[2] = Search.look_diagonal(self.word_search_grid, word, x, y)
+                if local_words[2] is not None and local_words[2].error_count == 0:
                     letter_is_word = True
 
-        if found_word is not None:
-            self.found_words.append(found_word)
-            if found_word.error_count > 0:  # to try and find a more accurate match for a word
-                letter_is_word = False
+        for found_word in local_words:
+            if found_word is not None:
+                self.found_words.append(found_word)
+                if found_word.error_count > 0:  # to try and find a more accurate match for a word
+                    letter_is_word = False
 
         return letter_is_word
 
@@ -113,10 +115,6 @@ class WordSearch:
                         words_to_delete.append(self.found_words[j])
                     elif self.found_words[i].error_count > self.found_words[j].error_count:
                         words_to_delete.append(self.found_words[i])
-                    else:
-                        print("DUPLICATE WORDS FOUND! (RED)")
-                        self.found_words[i].set_color('r')
-                        self.found_words[j].set_color('r')
 
         for word in words_to_delete:
             self.found_words.remove(word)

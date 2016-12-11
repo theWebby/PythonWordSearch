@@ -21,8 +21,10 @@ def wordsearch(matrix, words, train_data, train_labels):
     :param train_labels: Training labels for the training data.
     :return:
     """
-    word_search = WordSearch(matrix, 30, words, train_data, train_labels)
+    word_search = WordSearch(matrix, letter_size, words, train_data, train_labels)
     word_search.solve()
+    #word_search.find_word("EE")
+    word_search.print()
     word_search.show()
 
 

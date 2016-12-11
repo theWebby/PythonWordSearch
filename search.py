@@ -3,7 +3,7 @@ from found_word import FoundWord
 
 class Search:
 
-    error_tolerance = 0
+    error_tolerance = 1
 
     @classmethod
     def look_horizontal(cls, word_search, word, x, y):

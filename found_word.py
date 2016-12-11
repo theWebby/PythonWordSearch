@@ -50,10 +50,6 @@ class FoundWord:
 
         return pixel_coordinates
 
-    def set_color(self, color):
-        self.color = color
-
-
 
 
 
