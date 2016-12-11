@@ -1,12 +1,13 @@
 import numpy as np
 
 
-class GivenMethods:
+class Classifier:
     """
     Methods that have been supplied to help complete the assignment
     """
 
-    def classify(train, train_labels, test):
+    @staticmethod
+    def classify(train, train_labels, test, features=None):
         """Nearest neighbour classification
 
         train - matrix of training data (one sample per row)
@@ -15,6 +16,12 @@ class GivenMethods:
 
         returns: labels - vector of test data labels
         """
+
+        if features is None:
+            features = np.arange(0, train.shape[1])
+
+        train = train[:, features]
+        test = test[:, features]
 
         x = np.dot(test, train.transpose())
         modtest = np.sqrt(np.sum(test * test, axis=1))
