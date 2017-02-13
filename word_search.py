@@ -34,8 +34,8 @@ class WordSearch:
             train_data, self.letter_pixels = self.reduce_dimensions(train_data, self.letter_pixels)
 
         # creating the word search represented as number in a matrix (1 = A; 2 = B; ect.)
-        self.word_search_grid = np.reshape(Classifier.classify(train_data, train_labels, self.letter_pixels),
-                                           (self.grid_size, self.grid_size), order='F')
+        self.grid = np.reshape(Classifier.classify(train_data, train_labels, self.letter_pixels),
+                               (self.grid_size, self.grid_size), order='F')
 
         self.found_words = []
 
@@ -84,9 +84,9 @@ class WordSearch:
         """
         found = False
 
-        for y in range(0, len(self.word_search_grid)):
-            for x in range(0, len(self.word_search_grid[0])):
-                if self.word_search_grid[y][x] == FoundWord.letter_to_int(word[0]):
+        for y in range(0, self.grid_size):
+            for x in range(0, self.grid_size):
+                if self.grid[y][x] == FoundWord.letter_to_int(word[0]):
                     if self.find_word_at_point(word, x, y):
                         found = True
                         break
@@ -106,15 +106,15 @@ class WordSearch:
         local_words = [None] * 3
 
         # words with incorrect letters are not marked as found but can still be added to found_words
-        local_words[0] = Search.look_horizontal(self.word_search_grid, word, x, y)
+        local_words[0] = Search.look_horizontal(self.grid, word, x, y)
         if local_words[0] is not None and local_words[0].error_count == 0:
             letter_is_word = True
         else:
-            local_words[1] = Search.look_vertical(self.word_search_grid, word, x, y)
+            local_words[1] = Search.look_vertical(self.grid, word, x, y)
             if local_words[1] is not None and local_words[1].error_count == 0:
                 letter_is_word = True
             else:
-                local_words[2] = Search.look_diagonal(self.word_search_grid, word, x, y)
+                local_words[2] = Search.look_diagonal(self.grid, word, x, y)
                 if local_words[2] is not None and local_words[2].error_count == 0:
                     letter_is_word = True
 
@@ -171,40 +171,4 @@ class WordSearch:
         """
         Prints the numeric word search grid to the console
         """
-        print(self.word_search_grid)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        print(self.grid)
