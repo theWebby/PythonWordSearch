@@ -2,7 +2,6 @@ from found_word import FoundWord
 
 
 class Search:
-
     error_tolerance = 3
 
     @classmethod
@@ -142,5 +141,3 @@ class Search:
             return FoundWord(x, y, last_x, last_y, word, wrong_count)  # diagonal word therefore x and y change
         else:
             return None
-
-
