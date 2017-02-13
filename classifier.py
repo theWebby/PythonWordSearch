@@ -4,18 +4,18 @@ import scipy.linalg
 
 class Classifier:
     """
-    Methods that have been supplied to help complete the assignment
+    Methods that have been supplied to help complete the assignment.
     """
 
     @staticmethod
     def classify(train, train_labels, test, features=None):
-        """Nearest neighbour classification
+        """Nearest neighbour classification.
 
-        train - matrix of training data (one sample per row)
-        train_labels - corresponding training data labels
-        test - matrix of samples to classify
+        :param train: Matrix of training data (one sample per row).
+        :param train_labels: Corresponding training data labels.
+        :param test: Matrix of samples to classify.
 
-        returns: labels - vector of test data labels
+        :return: vector of test data labels.
         """
         if features is None:
             features = range(train.shape[1])
@@ -32,13 +32,16 @@ class Classifier:
 
         return labels
 
+    @staticmethod
     def learnPCA(data, N):
-        """Performs PCA dimensionality reduction of 'data' reducing down to
-        N dimensions.
+        """Performs PCA dimensionality reduction of 'data'.
+        
+        :param data: 2D feature matrix.
+        :param N: Number of dimensions to reduce to.
 
-        returns: (x, v)
-        x - dimensionally reduced data
-        v - the PCA axes (which may be useful)
+        :return: (x, v)
+                 x - dimensionally reduced data.
+                 v - the PCA axes (which may be useful).
         """
         ndata = data.shape[0]
 
@@ -61,8 +64,16 @@ class Classifier:
 
         return pca_axes, mean_vector
 
+    @staticmethod
     def reducePCA(data, pca_axes, mean_vector):
-        "Performs PCA dimensionality reduction"
+        """Performs PCA dimensionality reduction.
+        
+        :param data: 2D feature matrix.
+        :param pca_axes: PCA axes of data.
+        :param mean_vector: Mean vector of data.
+
+        :return: Reduced data
+        """
         # subtract mean from all data points
         centered = data - mean_vector
 
