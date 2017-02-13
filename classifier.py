@@ -17,7 +17,6 @@ class Classifier:
 
         returns: labels - vector of test data labels
         """
-
         if features is None:
             features = range(train.shape[1])
 
@@ -34,12 +33,13 @@ class Classifier:
         return labels
 
     def learnPCA(data, N):
-        # Performs PCA dimensionality reduction of 'data' reducing down to
-        # N dimensions.
-        # Returns:
-        # x - dimensionally reduced data
-        # v - the PCA axes (which may be useful)
+        """Performs PCA dimensionality reduction of 'data' reducing down to
+        N dimensions.
 
+        returns: (x, v)
+        x - dimensionally reduced data
+        v - the PCA axes (which may be useful)
+        """
         ndata = data.shape[0]
 
         # Calculate and display the mean face
@@ -62,8 +62,7 @@ class Classifier:
         return pca_axes, mean_vector
 
     def reducePCA(data, pca_axes, mean_vector):
-    # Performs PCA dimensionality reduction
-
+        "Performs PCA dimensionality reduction"
         # subtract mean from all data points
         centered = data - mean_vector
 
@@ -71,34 +70,3 @@ class Classifier:
         reduced_data = np.dot(centered, pca_axes.transpose())
 
         return reduced_data
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
